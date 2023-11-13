@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import ButtonComponent from "../ButtonComponent";
 import TextFieldComponent from "../TextFieldComponent";
 import ComboBoxComponent from "../ComboBoxComponent";
@@ -6,6 +7,9 @@ import ComboBoxComponent from "../ComboBoxComponent";
 import "./FormComponent.css";
 
 const FormComponent = (props) => {
+  const risco = useSelector((state) => state.projeto.risco);
+  const statusProjetos = useSelector((state) => state.projeto.status);
+
   const [nome, setNome] = useState("");
   const [id, setId] = useState(0);
   const [dataInicio, setDataInicio] = useState("");
@@ -14,7 +18,7 @@ const FormComponent = (props) => {
   const [descricao, setDescricao] = useState("");
   const [status, setStatus] = useState("");
   const [orcamento, setOrcamento] = useState(0);
-  const [risco, setRisco] = useState("");
+  const [riscoId, setRiscoId] = useState("");
   const [idGerente, setIdGerente] = useState("");
   // const [cargo, setCargo] = useState('')
   // const [imagem, setImagem] = useState('')
@@ -120,19 +124,22 @@ const FormComponent = (props) => {
           <div className="col">
             <ComboBoxComponent
               label="Gerente"
+              comboOptions={risco}
               clickOptionHandler={(valor) => setIdGerente(valor)}
             />
           </div>
           <div className="col">
             <ComboBoxComponent
               label="Status"
+              comboOptions={statusProjetos}
               clickOptionHandler={(valor) => setStatus(valor)}
             />
           </div>
           <div className="col">
             <ComboBoxComponent
               label="Risco"
-              clickOptionHandler={(valor) => setRisco(valor)}
+              comboOptions={risco}
+              clickOptionHandler={(valor) => riscoId(valor)}
             />
           </div>
         </div>
