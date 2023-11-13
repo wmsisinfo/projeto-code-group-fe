@@ -2,18 +2,21 @@ import { INSERT, DELETE, UPDATE, QUERY } from "../actions/projeto";
 
 const initialState = {
   projetos: [],
-  gerentes: [],
   status: [
-    "EM ANALISE",
-    "ANALISE REALIZADA",
-    "ANALISE APROVADA",
-    "INICIADO",
-    "PLANEJADO",
-    "EM ANDAMENTO",
-    "ENCERRADO",
-    "CANCELADO",
+    { id: "EM ANALISE", nome: "EM ANALISE" },
+    { id: "ANALISE REALIZADA", nome: "ANALISE REALIZADA" },
+    { id: "ANALISE APROVADA", nome: "ANALISE APROVADA" },
+    { id: "INICIADO", nome: "INICIADO" },
+    { id: "PLANEJADO", nome: "PLANEJADO" },
+    { id: "EM ANDAMENTO", nome: "EM ANDAMENTO" },
+    { id: "ENCERRADO", nome: "ENCERRADO" },
+    { id: "CANCELADO", nome: "CANCELADO" },
   ],
-  risco: ["BAIXO", "MEDIO", "ALTO"],
+  risco: [
+    { id: "BAIXO", nome: "BAIXO" },
+    { id: "MEDIO", nome: "MEDIO" },
+    { id: "ALTO", nome: "ALTO" },
+  ],
 };
 
 export default (state = initialState, action) => {
