@@ -1,23 +1,23 @@
-
 const ComboBoxComponent = (props) => {
+  const changeOptionHandler = (event) => {
+    console.log(event.target.value);
+    props.clickOptionHandler(event.target.value);
+  };
 
-    const clickOptionHandler = (event) => {
-        console.log(event.target.value);
-        props.clickOptionHandler(event.target.value)
-    }
+  return (
+    <section>
+      <h4>{props.label}</h4>
+      <select
+        className="form-select"
+        aria-label={props.label}
+        onChange={changeOptionHandler}
+      >
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+    </section>
+  );
+};
 
-    return (
-        <div className="dropdown">
-            <button className="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {props.label}
-            </button>
-            <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href="#" onClick={clickOptionHandler}>Action</a></li>
-                <li><a className="dropdown-item" href="#" onClick={clickOptionHandler}>Another action</a></li>
-                <li><a className="dropdown-item" href="#" onClick={clickOptionHandler}>Something else here</a></li>
-            </ul>
-        </div>
-    )
-}
-
-export default ComboBoxComponent
+export default ComboBoxComponent;

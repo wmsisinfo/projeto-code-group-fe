@@ -5,6 +5,7 @@
 .text-field label {
     display: block;
     margin-bottom: 2px;
+    text-align: left;
     font-size: 16px;
 }
 
