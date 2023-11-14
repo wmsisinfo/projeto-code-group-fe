@@ -25,20 +25,27 @@ function App() {
   const editProjetoHandler = (projeto) => {
     setEditingProjeto(projeto);
     console.log(projeto);
-    setIsListing(true);
+    //setIsListing(false);
   };
-  const deleteProjetoHandler = (id) => {};
+  const deleteProjetoHandler = (id, option) => {
+    console.log(id);
+    console.log(option);
+    // if (option === "NAO") return;
+    // console.log(id);
+    //setIsListing(false);
+  };
 
   return (
     <Provider store={store}>
       <div className="App">
+        {!isListing && <FormComponent />}
         {isListing && (
           <ListComponent
             persons={funcionarios}
             executeFunction={editProjetoHandler}
+            deleteFunction={deleteProjetoHandler}
           />
         )}
-        {!isListing && <FormComponent />}
       </div>
     </Provider>
   );
