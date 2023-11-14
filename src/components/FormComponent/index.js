@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import * as pessoaActions from "../../store/actions/pessoa";
-import * as projetoActions from "../../store/actions/projeto";
+import { useSelector } from "react-redux";
+import * as httpServices from "../../services/httpservices";
 import ProjetoDto from "../../model/Projeto";
-import ButtonComponent from "../ButtonComponent";
 import TextFieldComponent from "../TextFieldComponent";
 import ComboBoxComponent from "../ComboBoxComponent";
 //import ListaSuspensa from '../ListaSuspensa'
 import "./FormComponent.css";
 
 const FormComponent = (props) => {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const risco = useSelector((state) => state.projeto.risco);
   const statusProjetos = useSelector((state) => state.projeto.status);
 
@@ -28,16 +26,29 @@ const FormComponent = (props) => {
   const [funcionarios, setFuncionarios] = useState([]);
   useEffect(() => {
     setIsLoading(true);
+
+    if (props.objectToEdit) {
+      setNome(props.objectToEdit.nome);
+      setDescricao(props.objectToEdit.descricao);
+      setDataInicio(props.objectToEdit.dataInicio);
+      setDataFim(props.objectToEdit.dataFim);
+      setDataPrevisaoFim(props.objectToEdit.dataPrevisaoFim);
+      setOrcamento(parseFloat(props.objectToEdit.orcamento));
+      setRiscoId(props.objectToEdit.risco);
+      setStatus(props.objectToEdit.status);
+      setIdGerente(props.objectToEdit.idGerente);
+      setId(props.objectToEdit.id);
+    }
+
     const listar = async () => {
-      const resposta = await pessoaActions.listFuncionarios();
+      const resposta = await httpServices.listFuncionarios();
       if (resposta) {
-        console.log(resposta);
         setFuncionarios(resposta);
         setIsLoading(false);
       }
     };
     listar();
-  }, [statusProjetos]);
+  }, [statusProjetos, props.objectToEdit]);
 
   const saveHandler = (event) => {
     event.preventDefault();
@@ -54,22 +65,75 @@ const FormComponent = (props) => {
       idGerente
     );
 
+    if (!nome) {
+      alert("Nome deve ser informado");
+      return;
+    }
+    if (!dataInicio) {
+      alert("Data de início do projeto deve ser informada");
+      return;
+    }
+
+    if (!dataPrevisaoFim) {
+      alert("Data de previsão do final do projeto deve ser informada");
+      return;
+    }
+
+    if (!descricao) {
+      alert("Descrição do projeto deve ser informada");
+      return;
+    }
+
+    if (!status) {
+      alert("Status do projeto deve ser informado");
+      return;
+    }
+
+    if (!orcamento) {
+      alert("Orçamento do projeto deve ser informado");
+      setOrcamento(0);
+      return;
+    }
+
+    if (isNaN(orcamento)) {
+      alert("Orçamento do projeto deve ser informado");
+      setOrcamento(0);
+      return;
+    }
+
+    if (!riscoId) {
+      alert("Risco do projeto deve ser informado");
+      return;
+    }
+
+    if (!idGerente) {
+      alert("Gerente do projeto deve ser informado");
+      return;
+    }
+
     setIsLoading(true);
     const saveFunc = async () => {
-      const resposta = await projetoActions.saveProjetoHandler(projeto);
+      const resposta = await httpServices.saveProjetoHandler(projeto);
       if (resposta) {
-        console.log(resposta);
         setIsLoading(false);
       }
     };
     saveFunc();
+    alert("Gravado com sucesso");
+    limpar();
+    props.closeFunction();
+  };
 
+  const limpar = () => {
     setNome("");
-    console.log("gravando");
-    console.log(dataInicio);
-    // setCargo('')
-    // setImagem('')
-    // setTime('')
+    setDescricao("");
+    setDataFim("__/__/____");
+    setDataInicio("__/__/____");
+    setDataPrevisaoFim("__/__/____");
+    setOrcamento(0);
+    setRiscoId("BAIXO");
+    setStatus("EM ANALISE");
+    setIdGerente(0);
   };
 
   return (
@@ -179,8 +243,27 @@ const FormComponent = (props) => {
                 />
               </div>
             </div>
-
-            <ButtonComponent>Gravar</ButtonComponent>
+            <div className="row">
+              <div className="col">
+                <button
+                  type="button"
+                  onClick={saveHandler}
+                  className="btn btn-primary"
+                >
+                  Gravar
+                </button>
+              </div>
+              <div className="col"></div>
+              <div className="col">
+                <button
+                  type="button"
+                  onClick={() => props.closeFunction()}
+                  className="btn btn-secondary"
+                >
+                  Voltar
+                </button>
+              </div>
+            </div>
           </form>
         </section>
       )}
