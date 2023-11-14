@@ -26,7 +26,7 @@ function App() {
   const editProjetoHandler = (projeto) => {
     setEditingProjeto(projeto);
     console.log(projeto);
-    //setIsListing(false);
+    setIsListing(false);
   };
   const deleteProjetoHandler = (id, option) => {
     console.log(id);
@@ -40,7 +40,9 @@ function App() {
     <Provider store={store}>
       <div className="App">
         <>
-          {!isListing && <FormComponent />}
+          {!isListing && (
+            <FormComponent closeFunction={() => setIsListing(true)} />
+          )}
           {isListing && (
             <ListComponent
               persons={funcionarios}

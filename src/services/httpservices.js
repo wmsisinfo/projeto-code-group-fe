@@ -61,3 +61,23 @@ export const listarTodosProjetos = async () => {
 
   return resData;
 };
+
+export const readAllProjetos = async () => {
+  const uri = "http://localhost:9001/api/v1/projeto";
+
+  const requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+
+  const request = await fetch(uri, {
+    method: "GET",
+    requestOptions,
+  });
+  if (!request.ok) {
+    throw new Error("Erro ao obter a lista de projetos");
+  }
+
+  const response = request.json();
+  return response;
+};

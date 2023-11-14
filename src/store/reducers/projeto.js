@@ -27,6 +27,11 @@ export default (state = initialState, action) => {
       return initialState;
     case UPDATE:
       return initialState;
+    case QUERY:
+      return {
+        ...state,
+        projetos: action.projetos,
+      };
     default:
       return state;
   }
