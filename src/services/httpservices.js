@@ -81,3 +81,21 @@ export const readAllProjetos = async () => {
   const response = request.json();
   return response;
 };
+
+export const deleteProjeto = async (id) => {
+  const uri = `http://localhost:9001/api/v1/projeto/${id}`;
+
+  const requestOptions = {
+    method: "DELETE",
+    redirect: "follow",
+  };
+
+  const request = await fetch(uri, {
+    method: "DELETE",
+    redirect: "follow",
+  });
+  if (!request.ok) {
+    throw new Error("Erro ao excluir da lista de projetos");
+  }
+  return true;
+};

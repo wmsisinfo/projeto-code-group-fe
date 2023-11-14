@@ -15,11 +15,6 @@ const store = configureStore({
   reducer: { projeto: projetoReducer, pessoaReducer: pessoaReducer },
 });
 
-const funcionarios = [
-  { id: 1, nome: "ZE", status: "EM ANDAMENTO", risco: "ALTo" },
-  { id: 2, nome: "ZE MANE", status: "EM ANDAMENTO", risco: "ALTo" },
-];
-
 function App() {
   const [isListing, setIsListing] = useState(true);
   const [editingProjeto, setEditingProjeto] = useState(null);
@@ -27,13 +22,6 @@ function App() {
     setEditingProjeto(projeto);
     console.log(projeto);
     setIsListing(false);
-  };
-  const deleteProjetoHandler = (id, option) => {
-    console.log(id);
-    console.log(option);
-    // if (option === "NAO") return;
-    // console.log(id);
-    //setIsListing(false);
   };
 
   return (
@@ -43,13 +31,7 @@ function App() {
           {!isListing && (
             <FormComponent closeFunction={() => setIsListing(true)} />
           )}
-          {isListing && (
-            <ListComponent
-              persons={funcionarios}
-              executeFunction={editProjetoHandler}
-              deleteFunction={deleteProjetoHandler}
-            />
-          )}
+          {isListing && <ListComponent executeFunction={editProjetoHandler} />}
         </>
       </div>
     </Provider>

@@ -1,15 +1,17 @@
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
 import { useEffect, useState } from "react";
 import * as httpServices from "../../services/httpservices";
 
 const ListComponent = (props) => {
-  const [selectedId, setSelectedId] = useState(0);
+  const [itemId, setItemId] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [projetos, setProjetos] = useState([]);
 
   useEffect(() => {
     setIsReady(false);
+    listarTodosOsProjetos();
+  }, []);
+
+  const listarTodosOsProjetos = () => {
     httpServices
       .readAllProjetos()
       .then((_res) => {
@@ -19,40 +21,29 @@ const ListComponent = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  const options = {
-    title: "Confirma ?",
-    message: "Confirma a exclusão ?",
-    buttons: [
-      {
-        label: "Sim",
-        onClick: () => props.executeFunction(selectedId, "SIM"),
-      },
-      {
-        label: "Não",
-        onClick: () => props.executeFunction(selectedId, "NAO"),
-      },
-    ],
-    closeOnEscape: true,
-    closeOnClickOutside: true,
-    keyCodeForClose: [8, 32],
-    willUnmount: () => {},
-    afterClose: () => {},
-    onClickOutside: () => {},
-    onKeypress: () => {},
-    onKeypressEscape: () => {},
-    overlayClassName: "overlay-custom-class-name",
   };
 
   const editHandler = (item) => {
     props.executeFunction(item);
   };
 
-  const deleteHandler = (item) => {
-    setSelectedId(item.id);
-    confirmAlert(options);
-    //
+  const deleteProjetoDatabase = () => {};
+
+  const shouldDeleteProjetoHandler = (item) => {
+    const resposta = window.confirm("Confirma ?");
+    if (!resposta) return;
+    setItemId(item.id);
+    setIsReady(false);
+    httpServices
+      .deleteProjeto(item.id)
+      .then((_res) => {
+        listarTodosOsProjetos();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Não foi possível excluir o projeto");
+        setIsReady(true);
+      });
   };
 
   return (
@@ -90,7 +81,7 @@ const ListComponent = (props) => {
                     <td>
                       <i
                         className="bi bi bi-trash"
-                        onClick={() => deleteHandler(element)}
+                        onClick={() => shouldDeleteProjetoHandler(element)}
                       ></i>
                     </td>
                   </tr>
