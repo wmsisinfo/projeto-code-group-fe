@@ -4,6 +4,8 @@ import { useState } from "react";
 
 const ListComponent = (props) => {
   const [selectedId, setSelectedId] = useState(0);
+  const [isReady, setIsReady] = useState(false);
+
   const options = {
     title: "Confirma ?",
     message: "Confirma a exclusão ?",
@@ -41,7 +43,8 @@ const ListComponent = (props) => {
 
   return (
     <>
-      <div className="container-lg">
+      <div className="container-lg" style={{ marginTop: "100px" }}>
+        <h2>Lista dos Projetos</h2>
         <table className="table table-striped">
           <thead>
             <tr>
@@ -78,8 +81,14 @@ const ListComponent = (props) => {
             })}
           </tbody>
         </table>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => editHandler(null)}
+        >
+          Novo Projeto
+        </button>
       </div>
-      );
     </>
   );
 };

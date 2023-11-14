@@ -29,7 +29,7 @@ const FormComponent = (props) => {
   useEffect(() => {
     setIsLoading(true);
     const listar = async () => {
-      const resposta = await pessoaActions.listFuncionarios();
+      const resposta = await httpServices.listFuncionarios();
       if (resposta) {
         setFuncionarios(resposta);
         setIsLoading(false);

@@ -5,6 +5,7 @@ import projetoReducer from "./store/reducers/projeto";
 import pessoaReducer from "./store/reducers/pessoa";
 import ListComponent from "./components/ListComponent";
 import FormComponent from "./components/FormComponent";
+import { listarTodosProjetos } from "./services/httpservices";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -38,14 +39,16 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        {!isListing && <FormComponent />}
-        {isListing && (
-          <ListComponent
-            persons={funcionarios}
-            executeFunction={editProjetoHandler}
-            deleteFunction={deleteProjetoHandler}
-          />
-        )}
+        <>
+          {!isListing && <FormComponent />}
+          {isListing && (
+            <ListComponent
+              persons={funcionarios}
+              executeFunction={editProjetoHandler}
+              deleteFunction={deleteProjetoHandler}
+            />
+          )}
+        </>
       </div>
     </Provider>
   );
