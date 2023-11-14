@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import * as httpServices from "../../services/httpservices";
 
 const ListComponent = (props) => {
-  const [itemId, setItemId] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [projetos, setProjetos] = useState([]);
 
@@ -27,12 +26,9 @@ const ListComponent = (props) => {
     props.executeFunction(item);
   };
 
-  const deleteProjetoDatabase = () => {};
-
   const shouldDeleteProjetoHandler = (item) => {
     const resposta = window.confirm("Confirma ?");
     if (!resposta) return;
-    setItemId(item.id);
     setIsReady(false);
     httpServices
       .deleteProjeto(item.id)
@@ -40,8 +36,6 @@ const ListComponent = (props) => {
         listarTodosOsProjetos();
       })
       .catch((err) => {
-        console.log(err);
-        alert("Não foi possível excluir o projeto");
         setIsReady(true);
       });
   };

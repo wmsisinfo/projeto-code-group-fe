@@ -2,7 +2,7 @@ export const saveProjetoHandler = async (projeto) => {
   try {
     const uri = `http://localhost:9001/api/v1/projeto`;
     const method = projeto.id ? "PUT" : "POST";
-    if (projeto.id) uri = "";
+
     const json = JSON.stringify(projeto);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -85,17 +85,14 @@ export const readAllProjetos = async () => {
 export const deleteProjeto = async (id) => {
   const uri = `http://localhost:9001/api/v1/projeto/${id}`;
 
-  const requestOptions = {
-    method: "DELETE",
-    redirect: "follow",
-  };
-
   const request = await fetch(uri, {
     method: "DELETE",
     redirect: "follow",
   });
   if (!request.ok) {
-    throw new Error("Erro ao excluir da lista de projetos");
+    const resData = await request.json();
+    alert(resData.error);
+    return false;
   }
   return true;
 };

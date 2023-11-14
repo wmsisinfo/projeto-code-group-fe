@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import * as pessoaActions from "../../store/actions/pessoa";
+import { useSelector } from "react-redux";
 import * as httpServices from "../../services/httpservices";
 import ProjetoDto from "../../model/Projeto";
 import TextFieldComponent from "../TextFieldComponent";
@@ -27,6 +26,20 @@ const FormComponent = (props) => {
   const [funcionarios, setFuncionarios] = useState([]);
   useEffect(() => {
     setIsLoading(true);
+
+    if (props.objectToEdit) {
+      setNome(props.objectToEdit.nome);
+      setDescricao(props.objectToEdit.descricao);
+      setDataInicio(props.objectToEdit.dataInicio);
+      setDataFim(props.objectToEdit.dataFim);
+      setDataPrevisaoFim(props.objectToEdit.dataPrevisaoFim);
+      setOrcamento(parseFloat(props.objectToEdit.orcamento));
+      setRiscoId(props.objectToEdit.risco);
+      setStatus(props.objectToEdit.status);
+      setIdGerente(props.objectToEdit.idGerente);
+      setId(props.objectToEdit.id);
+    }
+
     const listar = async () => {
       const resposta = await httpServices.listFuncionarios();
       if (resposta) {
@@ -35,7 +48,7 @@ const FormComponent = (props) => {
       }
     };
     listar();
-  }, [statusProjetos]);
+  }, [statusProjetos, props.objectToEdit]);
 
   const saveHandler = (event) => {
     event.preventDefault();
@@ -239,7 +252,9 @@ const FormComponent = (props) => {
                 >
                   Gravar
                 </button>
-                <div className="col"></div>
+              </div>
+              <div className="col"></div>
+              <div className="col">
                 <button
                   type="button"
                   onClick={() => props.closeFunction()}
