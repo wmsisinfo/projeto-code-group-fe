@@ -20,25 +20,25 @@ const funcionarios = [
 ];
 
 function App() {
-  const [isEditing, setIsEditing] = useState(true);
+  const [isListing, setIsListing] = useState(true);
   const [editingProjeto, setEditingProjeto] = useState(null);
   const editProjetoHandler = (projeto) => {
     setEditingProjeto(projeto);
     console.log(projeto);
-    setIsEditing(true);
+    setIsListing(true);
   };
   const deleteProjetoHandler = (id) => {};
 
   return (
     <Provider store={store}>
       <div className="App">
-        {!isEditing && (
+        {isListing && (
           <ListComponent
             persons={funcionarios}
             executeFunction={editProjetoHandler}
           />
         )}
-        {isEditing && <FormComponent />}
+        {!isListing && <FormComponent />}
       </div>
     </Provider>
   );
