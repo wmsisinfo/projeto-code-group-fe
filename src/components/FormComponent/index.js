@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as pessoaActions from "../../store/actions/pessoa";
-import * as projetoActions from "../../store/actions/projeto";
+import * as httpServices from "../../services/httpservices";
 import ProjetoDto from "../../model/Projeto";
 import ButtonComponent from "../ButtonComponent";
 import TextFieldComponent from "../TextFieldComponent";
@@ -10,7 +10,7 @@ import ComboBoxComponent from "../ComboBoxComponent";
 import "./FormComponent.css";
 
 const FormComponent = (props) => {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const risco = useSelector((state) => state.projeto.risco);
   const statusProjetos = useSelector((state) => state.projeto.status);
 
@@ -31,7 +31,6 @@ const FormComponent = (props) => {
     const listar = async () => {
       const resposta = await pessoaActions.listFuncionarios();
       if (resposta) {
-        console.log(resposta);
         setFuncionarios(resposta);
         setIsLoading(false);
       }
@@ -56,9 +55,8 @@ const FormComponent = (props) => {
 
     setIsLoading(true);
     const saveFunc = async () => {
-      const resposta = await projetoActions.saveProjetoHandler(projeto);
+      const resposta = await httpServices.saveProjetoHandler(projeto);
       if (resposta) {
-        console.log(resposta);
         setIsLoading(false);
       }
     };
