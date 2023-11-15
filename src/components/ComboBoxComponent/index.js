@@ -2,7 +2,6 @@ import { useState } from "react";
 
 const ComboBoxComponent = (props) => {
   const [selectedValue, setSelectedValue] = useState(props.oldValue);
-  console.log(props.oldValue);
 
   const changeOptionHandler = (event) => {
     setSelectedValue(event.target.value);
