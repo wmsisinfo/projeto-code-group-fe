@@ -61,7 +61,7 @@ const FormComponent = (props) => {
       }
     };
     listar();
-  }, [statusProjetos, props.objectToEdit]);
+  }, [props.objectToEdit]);
 
   const saveHandler = (event) => {
     event.preventDefault();
@@ -270,6 +270,7 @@ const FormComponent = (props) => {
                 <div className="col">
                   <ComboBoxComponent
                     label="Gerente"
+                    oldValue={idGerente}
                     comboOptions={funcionarios}
                     clickOptionHandler={(valor) => setIdGerente(valor)}
                   />
@@ -277,6 +278,7 @@ const FormComponent = (props) => {
                 <div className="col">
                   <ComboBoxComponent
                     label="Status"
+                    oldValue={status}
                     comboOptions={statusProjetos}
                     clickOptionHandler={(valor) => setStatus(valor)}
                   />
@@ -285,6 +287,7 @@ const FormComponent = (props) => {
                   <ComboBoxComponent
                     label="Risco"
                     comboOptions={risco}
+                    oldValue={riscoId}
                     clickOptionHandler={(valor) => setRiscoId(valor)}
                   />
                 </div>
