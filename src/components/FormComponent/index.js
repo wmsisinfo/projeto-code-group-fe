@@ -4,11 +4,15 @@ import * as httpServices from "../../services/httpservices";
 import ProjetoDto from "../../model/Projeto";
 import TextFieldComponent from "../TextFieldComponent";
 import ComboBoxComponent from "../ComboBoxComponent";
-//import ListaSuspensa from '../ListaSuspensa'
+import AlertComponent from "../AlertComponent";
 import "./FormComponent.css";
 
 const FormComponent = (props) => {
-  //const dispatch = useDispatch();
+  const ERROR_ALERT = "alert-danger";
+  const ERROR_BTN = "btn-danger";
+  const SUCESS_ALERT = "alert-success";
+  const SUCCESS_BTN = "btn-primary";
+  const [alert, setAlert] = useState(null);
   const risco = useSelector((state) => state.projeto.risco);
   const statusProjetos = useSelector((state) => state.projeto.status);
 
@@ -24,6 +28,15 @@ const FormComponent = (props) => {
   const [riscoId, setRiscoId] = useState("");
   const [idGerente, setIdGerente] = useState("");
   const [funcionarios, setFuncionarios] = useState([]);
+
+  const showAlert = (message, type, btnType) => {
+    setAlert({ message, type, btnType });
+  };
+
+  const closeAlert = () => {
+    setAlert(null);
+  };
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -66,48 +79,72 @@ const FormComponent = (props) => {
     );
 
     if (!nome) {
-      alert("Nome deve ser informado");
+      showAlert("Nome deve ser informado", ERROR_ALERT, ERROR_BTN);
       return;
     }
     if (!dataInicio) {
-      alert("Data de início do projeto deve ser informada");
+      showAlert(
+        "Data de início do projeto deve ser informada",
+        ERROR_ALERT,
+        ERROR_BTN
+      );
       return;
     }
 
     if (!dataPrevisaoFim) {
-      alert("Data de previsão do final do projeto deve ser informada");
+      showAlert(
+        "Data de previsão do final do projeto deve ser informada",
+        ERROR_ALERT,
+        ERROR_BTN
+      );
       return;
     }
 
     if (!descricao) {
-      alert("Descrição do projeto deve ser informada");
+      showAlert(
+        "Descrição do projeto deve ser informada",
+        ERROR_ALERT,
+        ERROR_BTN
+      );
       return;
     }
 
     if (!status) {
-      alert("Status do projeto deve ser informado");
+      showAlert("Status do projeto deve ser informado", ERROR_ALERT, ERROR_BTN);
       return;
     }
 
     if (!orcamento) {
-      alert("Orçamento do projeto deve ser informado");
+      showAlert(
+        "Orçamento do projeto deve ser informado",
+        ERROR_ALERT,
+        ERROR_BTN
+      );
       setOrcamento(0);
       return;
     }
 
     if (isNaN(orcamento)) {
-      alert("Orçamento do projeto deve ser informado");
+      showAlert(
+        "Orçamento do projeto deve ser informado",
+        ERROR_ALERT,
+        ERROR_BTN
+      );
       setOrcamento(0);
       return;
     }
 
     if (!riscoId) {
-      alert("Risco do projeto deve ser informado");
+      showAlert("Risco do projeto deve ser informado", ERROR_ALERT, ERROR_BTN);
       return;
     }
 
     if (!idGerente) {
-      alert("Gerente do projeto deve ser informado");
+      showAlert(
+        "Gerente do projeto deve ser informado",
+        ERROR_ALERT,
+        ERROR_BTN
+      );
       return;
     }
 
@@ -116,10 +153,10 @@ const FormComponent = (props) => {
       const resposta = await httpServices.saveProjetoHandler(projeto);
       if (resposta) {
         setIsLoading(false);
+        showAlert("Dados gravados com sucesso!", SUCESS_ALERT, SUCCESS_BTN);
       }
     };
     saveFunc();
-    alert("Gravado com sucesso");
     limpar();
     props.closeFunction();
   };
@@ -141,131 +178,141 @@ const FormComponent = (props) => {
       {isLoading ? (
         <p>Carregando ... </p>
       ) : (
-        <section className="form-component">
-          <form onSubmit={saveHandler}>
-            <h2>Preencha os dados para criar ou alterar o projeto</h2>
-            <div className="row">
-              <div className="col-4">
-                <TextFieldComponent
-                  mandatory={true}
-                  label="Id:"
-                  fieldValue={id}
-                  isReadOnly={true}
-                  inputType="text"
-                />
+        <>
+          {alert && (
+            <AlertComponent
+              message={alert.message}
+              type={alert.type}
+              btnType="btn-danger"
+              onClose={closeAlert}
+            />
+          )}
+          <section className="form-component">
+            <form onSubmit={saveHandler}>
+              <h2>Preencha os dados para criar ou alterar o projeto</h2>
+              <div className="row">
+                <div className="col-4">
+                  <TextFieldComponent
+                    mandatory={true}
+                    label="Id:"
+                    fieldValue={id}
+                    isReadOnly={true}
+                    inputType="text"
+                  />
+                </div>
+                <div className="col-8">
+                  <TextFieldComponent
+                    mandatory={true}
+                    label="Nome"
+                    placeholder="Digite o nome do projeto"
+                    fieldValue={nome}
+                    isReadOnly={false}
+                    inputType="text"
+                    changeContentHandler={(valor) => setNome(valor)}
+                  />
+                </div>
               </div>
-              <div className="col-8">
-                <TextFieldComponent
-                  mandatory={true}
-                  label="Nome"
-                  placeholder="Digite o nome do projeto"
-                  fieldValue={nome}
-                  isReadOnly={false}
-                  inputType="text"
-                  changeContentHandler={(valor) => setNome(valor)}
-                />
+              <div className="row">
+                <div className="col">
+                  <TextFieldComponent
+                    mandatory={true}
+                    label="Data de início"
+                    placeholder="Digite de início do projeto"
+                    fieldValue={dataInicio}
+                    isReadOnly={false}
+                    inputType="date"
+                    changeContentHandler={(valor) => setDataInicio(valor)}
+                  />
+                </div>
+                <div className="col">
+                  <TextFieldComponent
+                    mandatory={true}
+                    label="Previsão de final"
+                    placeholder="Digite a data prevista para o final do projeto"
+                    fieldValue={dataPrevisaoFim}
+                    isReadOnly={false}
+                    inputType="date"
+                    changeContentHandler={(valor) => setDataPrevisaoFim(valor)}
+                  />
+                </div>
+                <div className="col">
+                  <TextFieldComponent
+                    mandatory={true}
+                    label="Data de finalização"
+                    placeholder="Digite de finalização do projeto"
+                    fieldValue={dataFim}
+                    isReadOnly={false}
+                    inputType="date"
+                    changeContentHandler={(valor) => setDataFim(valor)}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <TextFieldComponent
-                  mandatory={true}
-                  label="Data de início"
-                  placeholder="Digite de início do projeto"
-                  fieldValue={dataInicio}
-                  isReadOnly={false}
-                  inputType="date"
-                  changeContentHandler={(valor) => setDataInicio(valor)}
-                />
-              </div>
-              <div className="col">
-                <TextFieldComponent
-                  mandatory={true}
-                  label="Previsão de final"
-                  placeholder="Digite a data prevista para o final do projeto"
-                  fieldValue={dataPrevisaoFim}
-                  isReadOnly={false}
-                  inputType="date"
-                  changeContentHandler={(valor) => setDataPrevisaoFim(valor)}
-                />
-              </div>
-              <div className="col">
-                <TextFieldComponent
-                  mandatory={true}
-                  label="Data de finalização"
-                  placeholder="Digite de finalização do projeto"
-                  fieldValue={dataFim}
-                  isReadOnly={false}
-                  inputType="date"
-                  changeContentHandler={(valor) => setDataFim(valor)}
-                />
-              </div>
-            </div>
 
-            <TextFieldComponent
-              mandatory={true}
-              label="Descrição"
-              placeholder="Descrição do projeto"
-              fieldValue={descricao}
-              isReadOnly={false}
-              inputType="text"
-              changeContentHandler={(valor) => setDescricao(valor)}
-            />
-            <TextFieldComponent
-              mandatory={true}
-              label="Orçamento"
-              placeholder="Orçamento do projeto"
-              fieldValue={orcamento}
-              isReadOnly={false}
-              inputType="number"
-              changeContentHandler={(valor) => setOrcamento(valor)}
-            />
-            <div className="row">
-              <div className="col">
-                <ComboBoxComponent
-                  label="Gerente"
-                  comboOptions={funcionarios}
-                  clickOptionHandler={(valor) => setIdGerente(valor)}
-                />
+              <TextFieldComponent
+                mandatory={true}
+                label="Descrição"
+                placeholder="Descrição do projeto"
+                fieldValue={descricao}
+                isReadOnly={false}
+                inputType="text"
+                changeContentHandler={(valor) => setDescricao(valor)}
+              />
+              <TextFieldComponent
+                mandatory={true}
+                label="Orçamento"
+                placeholder="Orçamento do projeto"
+                fieldValue={orcamento}
+                isReadOnly={false}
+                inputType="number"
+                changeContentHandler={(valor) => setOrcamento(valor)}
+              />
+              <div className="row">
+                <div className="col">
+                  <ComboBoxComponent
+                    label="Gerente"
+                    comboOptions={funcionarios}
+                    clickOptionHandler={(valor) => setIdGerente(valor)}
+                  />
+                </div>
+                <div className="col">
+                  <ComboBoxComponent
+                    label="Status"
+                    comboOptions={statusProjetos}
+                    clickOptionHandler={(valor) => setStatus(valor)}
+                  />
+                </div>
+                <div className="col">
+                  <ComboBoxComponent
+                    label="Risco"
+                    comboOptions={risco}
+                    clickOptionHandler={(valor) => setRiscoId(valor)}
+                  />
+                </div>
               </div>
-              <div className="col">
-                <ComboBoxComponent
-                  label="Status"
-                  comboOptions={statusProjetos}
-                  clickOptionHandler={(valor) => setStatus(valor)}
-                />
+              <div className="row">
+                <div className="col">
+                  <button
+                    type="button"
+                    onClick={saveHandler}
+                    className="btn btn-primary"
+                  >
+                    Gravar
+                  </button>
+                </div>
+                <div className="col"></div>
+                <div className="col">
+                  <button
+                    type="button"
+                    onClick={() => props.closeFunction()}
+                    className="btn btn-secondary"
+                  >
+                    Voltar
+                  </button>
+                </div>
               </div>
-              <div className="col">
-                <ComboBoxComponent
-                  label="Risco"
-                  comboOptions={risco}
-                  clickOptionHandler={(valor) => setRiscoId(valor)}
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <button
-                  type="button"
-                  onClick={saveHandler}
-                  className="btn btn-primary"
-                >
-                  Gravar
-                </button>
-              </div>
-              <div className="col"></div>
-              <div className="col">
-                <button
-                  type="button"
-                  onClick={() => props.closeFunction()}
-                  className="btn btn-secondary"
-                >
-                  Voltar
-                </button>
-              </div>
-            </div>
-          </form>
-        </section>
+            </form>
+          </section>
+        </>
       )}
     </>
   );
