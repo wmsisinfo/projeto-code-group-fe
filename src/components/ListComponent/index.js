@@ -6,6 +6,7 @@ const ListComponent = (props) => {
   const [isReady, setIsReady] = useState(false);
   const [projetos, setProjetos] = useState([]);
   const [isToastVisible, setIsToastVisible] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
     setIsReady(false);
@@ -18,13 +19,20 @@ const ListComponent = (props) => {
 
   const handleCancel = () => {
     // Handle cancel logic
-    console.log("Cancelled");
     setIsToastVisible(false);
   };
 
   const handleConfirm = () => {
-    // Handle confirm logic
-    console.log("Confirmed");
+    console.log(itemToDelete.id);
+    setIsReady(false);
+    httpServices
+      .deleteProjeto(itemToDelete.id)
+      .then((_res) => {
+        listarTodosOsProjetos();
+      })
+      .catch((err) => {
+        setIsReady(true);
+      });
     setIsToastVisible(false);
   };
 
@@ -45,18 +53,8 @@ const ListComponent = (props) => {
   };
 
   const shouldDeleteProjetoHandler = (item) => {
+    setItemToDelete(item);
     showToast();
-    // const resposta = window.confirm("Confirma ?");
-    // if (!resposta) return;
-    // setIsReady(false);
-    // httpServices
-    //   .deleteProjeto(item.id)
-    //   .then((_res) => {
-    //     listarTodosOsProjetos();
-    //   })
-    //   .catch((err) => {
-    //     setIsReady(true);
-    //   });
   };
 
   return (
