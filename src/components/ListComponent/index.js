@@ -4,6 +4,7 @@ import AlertComponent from "../AlertComponent";
 import ToastComponent from "../ToastComponent";
 
 const ListComponent = (props) => {
+  const { executeFunction } = props;
   const ERROR_ALERT = "alert-danger";
   const ERROR_BTN = "btn-danger";
 
@@ -65,7 +66,7 @@ const ListComponent = (props) => {
   };
 
   const editHandler = (item) => {
-    props.executeFunction(item);
+    executeFunction(item);
     if (projetos.indexOf((c) => c.id === item.id) === -1) {
       setProjetos([...projetos, item]);
       return;

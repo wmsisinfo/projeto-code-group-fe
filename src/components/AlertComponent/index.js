@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import "./AlertComponent.css";
 
 const AlertComponent = (props) => {
-  console.log(props.message);
+  const { message, btnType, onClose } = props;
   const [isVisible, setIsVisible] = useState(true);
 
   const handleClose = () => {
     setIsVisible(false);
-    props.onClose();
+    onClose();
   };
 
   return (
     isVisible && (
       <div className="overlay">
         <div className={`overlay-content alert ${props.type}`}>
-          <p>{props.message}</p>
-          <button className={`btn ${props.btnType}`} onClick={handleClose}>
+          <p>{message}</p>
+          <button className={`btn ${btnType}`} onClick={handleClose}>
             Fechar
           </button>
         </div>

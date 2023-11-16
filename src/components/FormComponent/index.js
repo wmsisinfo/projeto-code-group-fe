@@ -8,6 +8,7 @@ import AlertComponent from "../AlertComponent";
 import "./FormComponent.css";
 
 const FormComponent = (props) => {
+  const { objectToEdit, closeFunction } = props;
   const ERROR_ALERT = "alert-danger";
   const ERROR_BTN = "btn-danger";
   const SUCESS_ALERT = "alert-success";
@@ -40,17 +41,17 @@ const FormComponent = (props) => {
   useEffect(() => {
     setIsLoading(true);
 
-    if (props.objectToEdit) {
-      setNome(props.objectToEdit.nome);
-      setDescricao(props.objectToEdit.descricao);
-      setDataInicio(props.objectToEdit.dataInicio);
-      setDataFim(props.objectToEdit.dataFim);
-      setDataPrevisaoFim(props.objectToEdit.dataPrevisaoFim);
-      setOrcamento(parseFloat(props.objectToEdit.orcamento));
-      setRiscoId(props.objectToEdit.risco);
-      setStatus(props.objectToEdit.status);
-      setIdGerente(props.objectToEdit.idGerente);
-      setId(props.objectToEdit.id);
+    if (objectToEdit) {
+      setNome(objectToEdit.nome);
+      setDescricao(objectToEdit.descricao);
+      setDataInicio(objectToEdit.dataInicio);
+      setDataFim(objectToEdit.dataFim);
+      setDataPrevisaoFim(objectToEdit.dataPrevisaoFim);
+      setOrcamento(parseFloat(objectToEdit.orcamento));
+      setRiscoId(objectToEdit.risco);
+      setStatus(objectToEdit.status);
+      setIdGerente(objectToEdit.idGerente);
+      setId(objectToEdit.id);
     }
 
     const listar = async () => {
@@ -61,7 +62,7 @@ const FormComponent = (props) => {
       }
     };
     listar();
-  }, [props.objectToEdit]);
+  }, [objectToEdit]);
 
   const saveHandler = (event) => {
     event.preventDefault();
@@ -158,7 +159,7 @@ const FormComponent = (props) => {
     };
     saveFunc();
     limpar();
-    props.closeFunction();
+    closeFunction();
   };
 
   const limpar = () => {
@@ -306,7 +307,7 @@ const FormComponent = (props) => {
                 <div className="col">
                   <button
                     type="button"
-                    onClick={() => props.closeFunction()}
+                    onClick={() => closeFunction()}
                     className="btn btn-secondary"
                   >
                     Voltar

@@ -1,24 +1,25 @@
 import { useState } from "react";
 
 const ComboBoxComponent = (props) => {
-  const [selectedValue, setSelectedValue] = useState(props.oldValue);
+  const { label, comboOptions, clickOptionHandler, oldValue } = props;
+  const [selectedValue, setSelectedValue] = useState(oldValue);
 
   const changeOptionHandler = (event) => {
     setSelectedValue(event.target.value);
-    props.clickOptionHandler(event.target.value);
+    clickOptionHandler(event.target.value);
   };
 
   return (
     <section>
-      <h4>{props.label}</h4>
+      <h4>{label}</h4>
       <select
-        value={selectedValue ? selectedValue : ""}
+        value={selectedValue || ""}
         className="form-select"
-        aria-label={props.label}
+        aria-label={label}
         onChange={changeOptionHandler}
       >
         <option value="">...</option>
-        {props.comboOptions.map((option) => (
+        {comboOptions.map((option) => (
           <option key={option.id} value={option.id}>
             {option.nome}
           </option>

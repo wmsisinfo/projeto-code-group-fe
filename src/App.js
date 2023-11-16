@@ -26,15 +26,13 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <>
-          {!isListing && (
-            <FormComponent
-              closeFunction={() => setIsListing(true)}
-              objectToEdit={editingProjeto}
-            />
-          )}
-          {isListing && <ListComponent executeFunction={editProjetoHandler} />}
-        </>
+        {!isListing && (
+          <FormComponent
+            closeFunction={() => setIsListing(true)}
+            objectToEdit={editingProjeto}
+          />
+        )}
+        {isListing && <ListComponent executeFunction={editProjetoHandler} />}
       </div>
     </Provider>
   );
