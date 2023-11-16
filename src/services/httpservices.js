@@ -91,8 +91,13 @@ export const deleteProjeto = async (id) => {
   });
   if (!request.ok) {
     const resData = await request.json();
-    alert(resData.error);
-    return false;
+    return {
+      result: false,
+      error: resData.error,
+    };
   }
-  return true;
+  return {
+    result: true,
+    error: "",
+  };
 };

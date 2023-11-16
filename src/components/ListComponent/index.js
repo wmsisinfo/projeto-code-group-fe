@@ -1,12 +1,25 @@
 import { useEffect, useState } from "react";
 import * as httpServices from "../../services/httpservices";
+import AlertComponent from "../AlertComponent";
 import ToastComponent from "../ToastComponent";
 
 const ListComponent = (props) => {
+  const ERROR_ALERT = "alert-danger";
+  const ERROR_BTN = "btn-danger";
+
   const [isReady, setIsReady] = useState(false);
   const [projetos, setProjetos] = useState([]);
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type, btnType) => {
+    setAlert({ message, type, btnType });
+  };
+
+  const closeAlert = () => {
+    setAlert(null);
+  };
 
   useEffect(() => {
     setIsReady(false);
@@ -18,19 +31,22 @@ const ListComponent = (props) => {
   };
 
   const handleCancel = () => {
-    // Handle cancel logic
     setIsToastVisible(false);
   };
 
   const handleConfirm = () => {
-    console.log(itemToDelete.id);
-    setIsReady(false);
     httpServices
       .deleteProjeto(itemToDelete.id)
       .then((_res) => {
-        listarTodosOsProjetos();
+        if (_res.result === false) {
+          showAlert(_res.error, ERROR_ALERT, ERROR_BTN);
+          return;
+        }
+        const listaAlterada = projetos.filter((c) => c.id !== itemToDelete.id);
+        setProjetos(listaAlterada);
       })
       .catch((err) => {
+        showAlert(err.message, ERROR_ALERT, ERROR_BTN);
         setIsReady(true);
       });
     setIsToastVisible(false);
@@ -50,6 +66,12 @@ const ListComponent = (props) => {
 
   const editHandler = (item) => {
     props.executeFunction(item);
+    if (projetos.indexOf((c) => c.id === item.id) === -1) {
+      setProjetos([...projetos, item]);
+      return;
+    }
+    const novaLista = projetos.push(item);
+    setProjetos(novaLista);
   };
 
   const shouldDeleteProjetoHandler = (item) => {
@@ -59,6 +81,14 @@ const ListComponent = (props) => {
 
   return (
     <>
+      {alert && (
+        <AlertComponent
+          message={alert.message}
+          type={alert.type}
+          btnType="btn-danger"
+          onClose={closeAlert}
+        />
+      )}
       {!isReady ? (
         <p>Aguarde ... </p>
       ) : (
