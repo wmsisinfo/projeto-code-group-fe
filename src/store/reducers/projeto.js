@@ -1,4 +1,4 @@
-import { INSERT, DELETE, UPDATE, QUERY } from "../actions/projeto";
+import { INSERT, QUERY, DELETE } from "../actions/projeto";
 
 const initialState = {
   projetos: [],
@@ -19,20 +19,38 @@ const initialState = {
   ],
 };
 
-export default (state = initialState, action) => {
+const handleReduce = (state = initialState, action) => {
   switch (action.type) {
-    case INSERT:
-      return initialState;
-    case DELETE:
-      return initialState;
-    case UPDATE:
-      return initialState;
     case QUERY:
       return {
         ...state,
         projetos: action.projetos,
       };
+    case INSERT:
+      const modifiedState = { ...state };
+      let newList = modifiedState.projetos.map((p) => p);
+      const idx = newList.findIndex((p) => p.id === action.newItem.id);
+      if (idx >= 0) {
+        newList[idx] = action.newItem;
+      } else {
+        newList.push(action.newItem);
+      }
+      return {
+        ...state,
+        projetos: newList,
+      };
+    case DELETE:
+      const stateToDelete = { ...state };
+      let newListAfterDelete = stateToDelete.projetos
+        .filter((e) => e.id !== action.itemToDelete.id)
+        .map((p) => p);
+      return {
+        ...state,
+        projetos: newListAfterDelete,
+      };
     default:
       return state;
   }
 };
+
+export default handleReduce;

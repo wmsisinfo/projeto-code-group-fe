@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as httpServices from "../../services/httpservices";
+import * as projectActions from "../../store/actions/projeto";
 import ProjetoDto from "../../model/Projeto";
 import TextFieldComponent from "../TextFieldComponent";
 import ComboBoxComponent from "../ComboBoxComponent";
@@ -8,6 +9,9 @@ import AlertComponent from "../AlertComponent";
 import "./FormComponent.css";
 
 const FormComponent = (props) => {
+  const dispatch = useDispatch();
+  const projetos = useSelector((state) => state.projeto.projetos);
+
   const { objectToEdit, closeFunction } = props;
   const ERROR_ALERT = "alert-danger";
   const ERROR_BTN = "btn-danger";
@@ -17,9 +21,10 @@ const FormComponent = (props) => {
   const risco = useSelector((state) => state.projeto.risco);
   const statusProjetos = useSelector((state) => state.projeto.status);
 
-  const [nome, setNome] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isNewItem, setIsNewItem] = useState(true);
   const [id, setId] = useState(0);
+  const [nome, setNome] = useState("");
   const [dataInicio, setDataInicio] = useState("");
   const [dataPrevisaoFim, setDataPrevisaoFim] = useState("");
   const [dataFim, setDataFim] = useState("");
@@ -42,6 +47,7 @@ const FormComponent = (props) => {
     setIsLoading(true);
 
     if (objectToEdit) {
+      setIsNewItem(false);
       setNome(objectToEdit.nome);
       setDescricao(objectToEdit.descricao);
       setDataInicio(objectToEdit.dataInicio);
@@ -55,7 +61,7 @@ const FormComponent = (props) => {
     }
 
     const listar = async () => {
-      const resposta = await httpServices.listFuncionarios();
+      const resposta = await httpServices.listWorkers();
       if (resposta) {
         setFuncionarios(resposta);
         setIsLoading(false);
@@ -151,10 +157,12 @@ const FormComponent = (props) => {
 
     setIsLoading(true);
     const saveFunc = async () => {
-      const resposta = await httpServices.saveProjetoHandler(projeto);
+      const resposta = await httpServices.saveOrUpdateProject(projeto);
       if (resposta) {
+        if (isNewItem) projeto.id = resposta;
         setIsLoading(false);
-        showAlert("Dados gravados com sucesso!", SUCESS_ALERT, SUCCESS_BTN);
+
+        dispatch(projectActions.insertOrUpdateProjectInList(projeto));
       }
     };
     saveFunc();
