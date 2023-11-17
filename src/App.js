@@ -1,10 +1,10 @@
 import { Provider } from "react-redux";
 import { useState } from "react";
+import AppWrapper from "./components/AppWrapper/AppWrapper";
 import { configureStore } from "@reduxjs/toolkit";
 import projetoReducer from "./store/reducers/projeto";
 import pessoaReducer from "./store/reducers/pessoa";
-import ListComponent from "./components/ListComponent";
-import FormComponent from "./components/FormComponent";
+
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -15,25 +15,10 @@ const store = configureStore({
 });
 
 function App() {
-  const [isListing, setIsListing] = useState(true);
-  const [editingProjeto, setEditingProjeto] = useState(null);
-  const editProjetoHandler = (projeto) => {
-    setEditingProjeto(projeto);
-    console.log(projeto);
-    setIsListing(false);
-  };
-
+  const [isReady, setIsReady] = useState(true);
   return (
     <Provider store={store}>
-      <div className="App">
-        {!isListing && (
-          <FormComponent
-            closeFunction={() => setIsListing(true)}
-            objectToEdit={editingProjeto}
-          />
-        )}
-        {isListing && <ListComponent executeFunction={editProjetoHandler} />}
-      </div>
+      <AppWrapper />;
     </Provider>
   );
 }

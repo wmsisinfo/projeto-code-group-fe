@@ -17,7 +17,9 @@ export const saveProjetoHandler = async (projeto) => {
     if (!response.ok) {
       throw new Error("Erro gravar o projeto");
     }
-    return true;
+
+    const resData = await response.json();
+    return resData.id;
   } catch (err) {
     console.log(err);
     throw err;
@@ -44,7 +46,7 @@ export const listFuncionarios = async () => {
 };
 
 export const listarTodosProjetos = async () => {
-  const uri = `http://localhost:9001/api/v1/pessoa/projeto`;
+  const uri = `http://localhost:9001/api/v1/projeto`;
 
   const requestOptions = {
     method: "GET",
