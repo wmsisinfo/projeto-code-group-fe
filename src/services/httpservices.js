@@ -1,4 +1,4 @@
-export const saveProjetoHandler = async (projeto) => {
+export const saveOrUpdateProject = async (projeto) => {
   try {
     const uri = `http://localhost:9001/api/v1/projeto`;
     const method = projeto.id ? "PUT" : "POST";
@@ -26,7 +26,7 @@ export const saveProjetoHandler = async (projeto) => {
   }
 };
 
-export const listFuncionarios = async () => {
+export const listWorkers = async () => {
   const uri = `http://localhost:9001/api/v1/pessoa/funcionarios`;
 
   const requestOptions = {
@@ -45,7 +45,7 @@ export const listFuncionarios = async () => {
   return resData;
 };
 
-export const listarTodosProjetos = async () => {
+export const listAllProjects = async () => {
   const uri = `http://localhost:9001/api/v1/projeto`;
 
   const requestOptions = {
@@ -64,7 +64,7 @@ export const listarTodosProjetos = async () => {
   return resData;
 };
 
-export const readAllProjetos = async () => {
+export const readAllProjects = async () => {
   const uri = "http://localhost:9001/api/v1/projeto";
 
   const requestOptions = {
@@ -84,7 +84,7 @@ export const readAllProjetos = async () => {
   return response;
 };
 
-export const deleteProjeto = async (id) => {
+export const deleteProject = async (id) => {
   const uri = `http://localhost:9001/api/v1/projeto/${id}`;
 
   const request = await fetch(uri, {
@@ -93,13 +93,7 @@ export const deleteProjeto = async (id) => {
   });
   if (!request.ok) {
     const resData = await request.json();
-    return {
-      result: false,
-      error: resData.error,
-    };
+    throw new Error(resData.error);
   }
-  return {
-    result: true,
-    error: "",
-  };
+  return true;
 };

@@ -61,7 +61,7 @@ const FormComponent = (props) => {
     }
 
     const listar = async () => {
-      const resposta = await httpServices.listFuncionarios();
+      const resposta = await httpServices.listWorkers();
       if (resposta) {
         setFuncionarios(resposta);
         setIsLoading(false);
@@ -157,7 +157,7 @@ const FormComponent = (props) => {
 
     setIsLoading(true);
     const saveFunc = async () => {
-      const resposta = await httpServices.saveProjetoHandler(projeto);
+      const resposta = await httpServices.saveOrUpdateProject(projeto);
       if (resposta) {
         if (isNewItem) projeto.id = resposta;
         setIsLoading(false);

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AlertComponent from "../AlertComponent";
 import ToastComponent from "../ToastComponent";
-import * as projetoActions from "../../store/actions/projeto";
+import * as projectActions from "../../store/actions/projeto";
+import * as httpServices from "../../services/httpservices";
 
 const ListComponent = (props) => {
   const { executeFunction } = props;
@@ -32,11 +33,17 @@ const ListComponent = (props) => {
   };
 
   const handleConfirm = () => {
-    dispatch(projetoActions.deleteProjeto(itemToDelete.id))
-      .then(() => {})
-      .catch((err) => {
-        showAlert(err.message, ERROR_ALERT, ERROR_BTN);
-      });
+    const deleteFunc = async () => {
+      try {
+        const resposta = await httpServices.deleteProject(itemToDelete.id);
+        if (resposta) {
+          dispatch(projectActions.deleteProject(itemToDelete));
+        }
+      } catch (error) {
+        showAlert(error.message, ERROR_ALERT, ERROR_BTN);
+      }
+    };
+    deleteFunc();
     setIsToastVisible(false);
   };
 

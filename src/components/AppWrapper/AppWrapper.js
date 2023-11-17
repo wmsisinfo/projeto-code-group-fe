@@ -26,7 +26,7 @@ const AppWrapper = () => {
   useEffect(() => {
     try {
       const listProjects = async () => {
-        const list = await httpServices.listarTodosProjetos();
+        const list = await httpServices.listAllProjects();
         dispatch(projectActions.updateProjectsList(list));
       };
       listProjects();

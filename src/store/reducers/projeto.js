@@ -1,4 +1,4 @@
-import { INSERT, QUERY } from "../actions/projeto";
+import { INSERT, QUERY, DELETE } from "../actions/projeto";
 
 const initialState = {
   projetos: [],
@@ -38,6 +38,15 @@ const handleReduce = (state = initialState, action) => {
       return {
         ...state,
         projetos: newList,
+      };
+    case DELETE:
+      const stateToDelete = { ...state };
+      let newListAfterDelete = stateToDelete.projetos
+        .filter((e) => e.id !== action.itemToDelete.id)
+        .map((p) => p);
+      return {
+        ...state,
+        projetos: newListAfterDelete,
       };
     default:
       return state;
