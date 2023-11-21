@@ -1,12 +1,12 @@
 .text-field {
-    margin: 16px 0;
+    margin: 12px 0;
 }
 
 .text-field label {
     display: block;
     margin-bottom: 2px;
     text-align: left;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .text-field input {
@@ -14,7 +14,7 @@
     box-shadow: 10px 10px 16px rgba(0, 0, 0, 0.06);
     width: 100%;
     border: none;
-    font-size: 16px;
-    padding: 18px;
+    font-size: 14px;
+    padding: 12px;
     box-sizing: border-box;
 }

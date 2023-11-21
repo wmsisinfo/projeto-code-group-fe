@@ -1,6 +1,6 @@
 .form-component {
     display: flex;
-    margin: 50px 0;
+    margin: 40px 0;
     margin-left: 80px;
 }
 
@@ -8,6 +8,6 @@
     max-width: 80%;
     background-color: lightgray;
     border-radius: 20px;
-    padding: 18px 32px;
+    padding: 14px 30px;
     box-shadow: 8px 8px 16px rgba(0,0,0, 0.08);
 }

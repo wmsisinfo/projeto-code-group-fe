@@ -301,25 +301,27 @@ const FormComponent = (props) => {
                   />
                 </div>
               </div>
-              <div className="row">
-                <div className="col">
-                  <button
-                    type="button"
-                    onClick={saveHandler}
-                    className="btn btn-primary"
-                  >
-                    Gravar
-                  </button>
-                </div>
-                <div className="col"></div>
-                <div className="col">
-                  <button
-                    type="button"
-                    onClick={() => closeFunction()}
-                    className="btn btn-secondary"
-                  >
-                    Voltar
-                  </button>
+              <div className="container">
+                <div className="row">
+                  <div className="col">
+                    <button
+                      type="button"
+                      onClick={saveHandler}
+                      className="btn btn-primary"
+                    >
+                      Gravar
+                    </button>
+                  </div>
+                  <div className="col"></div>
+                  <div className="col">
+                    <button
+                      type="button"
+                      onClick={() => closeFunction()}
+                      className="btn btn-secondary"
+                    >
+                      Voltar
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>
